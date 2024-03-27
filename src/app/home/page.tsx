@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react'
 import Card from '../ui/home/card/card'
-import Chart from '../ui/home/chart/chart'
 import styles from '../ui/home/home.module.css'
 import Rightbar from '../ui/home/rightbar/rightbar'
 import Transactions from '../ui/home/transactions/transactions'
@@ -17,7 +16,6 @@ const Home: FunctionComponent<HomeProps> = () => {
           <Card />
         </div>
         <Transactions />
-        <Chart />
       </div>
       <div className={styles.side}>
         <Rightbar />
