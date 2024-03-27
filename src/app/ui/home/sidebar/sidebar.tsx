@@ -27,7 +27,7 @@ const menuItems: IMenuItems[] = [
       },
       {
         title: 'Users',
-        path: '/Users',
+        path: '/home/users',
         icon: <MdSupervisedUserCircle />,
       },
       {
