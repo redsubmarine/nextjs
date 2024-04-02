@@ -5,11 +5,17 @@ import styles from '@/app/ui/home/users/users.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
+import { ReadonlyURLSearchParams } from 'next/navigation'
 
-interface UsersPageProps {}
+interface UsersPageProps {
+  searchParams?: ReadonlyURLSearchParams
+}
 
-const UsersPage: FunctionComponent<UsersPageProps> = async () => {
-  const users = await fetchUsers()
+const UsersPage: FunctionComponent<UsersPageProps> = async ({ searchParams }) => {
+  const sp = new URLSearchParams(searchParams)
+  const q = sp.get('q') || ''
+
+  const users = await fetchUsers(q)
   return (
     <div className={styles.container}>
       <div className={styles.top}>
