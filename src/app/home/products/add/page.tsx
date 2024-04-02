@@ -1,12 +1,13 @@
-import { FunctionComponent } from 'react'
+import { addProduct } from '@/app/lib/actions'
 import styles from '@/app/ui/home/products/addProduct/addProduct.module.css'
+import { FunctionComponent } from 'react'
 
 interface AddProductProps {}
 
 const AddProduct: FunctionComponent<AddProductProps> = () => {
   return (
     <div className={styles.container}>
-      <form action="" className={styles.form}>
+      <form action={addProduct} className={styles.form}>
         <input type="text" placeholder="title" name="title" required />
         <select name="cat" id="cat">
           <option value="general">Choose a Category</option>
@@ -18,7 +19,7 @@ const AddProduct: FunctionComponent<AddProductProps> = () => {
         <input type="number" placeholder="stock" name="stock" />
         <input type="text" placeholder="color" name="color" />
         <input type="text" placeholder="size" name="size" />
-        <textarea name="desc" id="desc" rows={16} placeholder="Description"></textarea>
+        <textarea name="description" id="description" rows={16} placeholder="Description"></textarea>
         <button type="submit">Submit</button>
       </form>
     </div>

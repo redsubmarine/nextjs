@@ -1,18 +1,24 @@
+'use server'
+
+import bcrypt from 'bcrypt'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { User } from './models'
+import { Product, User } from './models'
 import { connectToDB } from './utils'
 
 export const addUser = async (formData: FormData) => {
-  'use server'
   const { username, email, password, phone, address, isAdmin, isActive } = Object.fromEntries(formData)
 
   try {
     await connectToDB()
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(String(password), salt)
+
     const newUser = new User({
       username,
       email,
-      password,
+      password: hashedPassword,
       phone,
       address,
       isAdmin,
@@ -26,4 +32,28 @@ export const addUser = async (formData: FormData) => {
 
   revalidatePath('/home/users')
   redirect('/home/users')
+}
+
+export const addProduct = async (formData: FormData) => {
+  const { title, description, price, stock, color, size } = Object.fromEntries(formData)
+
+  try {
+    await connectToDB()
+
+    const newProduct = new Product({
+      title,
+      description,
+      price,
+      stock,
+      color,
+      size,
+    })
+    await newProduct.save()
+  } catch (err) {
+    console.log(err)
+    throw new Error('Failed to create product!')
+  }
+
+  revalidatePath('/home/products')
+  redirect('/home/products')
 }
