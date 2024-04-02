@@ -1,4 +1,4 @@
-'use client'
+import { fetchUsers } from '@/app/lib/data'
 import Pagination from '@/app/ui/home/pagination/pagination'
 import Search from '@/app/ui/home/search/search'
 import styles from '@/app/ui/home/users/users.module.css'
@@ -8,7 +8,8 @@ import { FunctionComponent } from 'react'
 
 interface UsersPageProps {}
 
-const UsersPage: FunctionComponent<UsersPageProps> = () => {
+const UsersPage: FunctionComponent<UsersPageProps> = async () => {
+  const users = await fetchUsers()
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -29,28 +30,38 @@ const UsersPage: FunctionComponent<UsersPageProps> = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div className={styles.user}>
-                <Image src="/noavatar.png" alt="no avatar" width={40} height={40} className={styles.userImage} />
-                Red Me
-              </div>
-            </td>
-            <td>red@wonseok.me</td>
-            <td>2024.03.27.</td>
-            <td>Admin</td>
-            <td>active</td>
-            <td>
-              <div className={styles.buttons}>
-                <Link href="/home/users/test">
-                  <button className={`${styles.button} ${styles.view}`}>View</button>
-                </Link>
-                <Link href="/">
-                  <button className={`${styles.button} ${styles.delete}`}>Delete</button>
-                </Link>
-              </div>
-            </td>
-          </tr>
+          {users.map((user) => {
+            return (
+              <tr key={user.id}>
+                <td>
+                  <div className={styles.user}>
+                    <Image
+                      src={user.image || '/noavatar.png'}
+                      alt="profile image"
+                      width={40}
+                      height={40}
+                      className={styles.userImage}
+                    />
+                    {user.username}
+                  </div>
+                </td>
+                <td>{user.email}</td>
+                <td>{user.createdAt?.toString().slice(4, 16)}</td>
+                <td>{user.isAdmin ? 'Admin' : 'Client'}</td>
+                <td>{user.isActive ? 'active' : 'passive'}</td>
+                <td>
+                  <div className={styles.buttons}>
+                    <Link href={`/home/users/${user.id}`}>
+                      <button className={`${styles.button} ${styles.view}`}>View</button>
+                    </Link>
+                    <Link href="/">
+                      <button className={`${styles.button} ${styles.delete}`}>Delete</button>
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
       <Pagination />

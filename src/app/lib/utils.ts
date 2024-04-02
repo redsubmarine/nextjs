@@ -1,7 +1,8 @@
 import mongoose, { ConnectionStates } from 'mongoose'
 
+const connection = { isConnected: false }
+
 export const connectToDB = async () => {
-  const connection = { isConnected: false }
   try {
     if (connection.isConnected) return
 
