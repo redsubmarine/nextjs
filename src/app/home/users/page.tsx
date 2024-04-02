@@ -14,8 +14,10 @@ interface UsersPageProps {
 const UsersPage: FunctionComponent<UsersPageProps> = async ({ searchParams }) => {
   const sp = new URLSearchParams(searchParams)
   const q = sp.get('q') || ''
+  const page = parseInt(sp.get('page') || '1') || 1
 
-  const users = await fetchUsers(q)
+  const { users, count } = await fetchUsers(q, page)
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -70,7 +72,7 @@ const UsersPage: FunctionComponent<UsersPageProps> = async ({ searchParams }) =>
           })}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={count} />
     </div>
   )
 }
