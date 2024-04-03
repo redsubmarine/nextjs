@@ -47,17 +47,17 @@ const menuItems: IMenuItems[] = [
     list: [
       {
         title: 'Revenue',
-        path: '/dashboard/revenue',
+        path: '/home/revenue',
         icon: <MdWork />,
       },
       {
         title: 'Reports',
-        path: '/dashboard/reports',
+        path: '/home/reports',
         icon: <MdAnalytics />,
       },
       {
         title: 'Teams',
-        path: '/dashboard/teams',
+        path: '/home/teams',
         icon: <MdPeople />,
       },
     ],
@@ -67,12 +67,12 @@ const menuItems: IMenuItems[] = [
     list: [
       {
         title: 'Settings',
-        path: '/dashboard/settings',
+        path: '/home/settings',
         icon: <MdOutlineSettings />,
       },
       {
         title: 'Help',
-        path: '/dashboard/help',
+        path: '/home/help',
         icon: <MdHelpCenter />,
       },
     ],
