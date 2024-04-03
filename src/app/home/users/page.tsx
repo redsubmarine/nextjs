@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
 import { ReadonlyURLSearchParams } from 'next/navigation'
+import { deleteUser } from '@/app/lib/actions'
 
 interface UsersPageProps {
   searchParams?: ReadonlyURLSearchParams
@@ -62,9 +63,10 @@ const UsersPage: FunctionComponent<UsersPageProps> = async ({ searchParams }) =>
                     <Link href={`/home/users/${user.id}`}>
                       <button className={`${styles.button} ${styles.view}`}>View</button>
                     </Link>
-                    <Link href="/">
+                    <form action={deleteUser}>
+                      <input type="hidden" name="id" value={user.id} />
                       <button className={`${styles.button} ${styles.delete}`}>Delete</button>
-                    </Link>
+                    </form>
                   </div>
                 </td>
               </tr>

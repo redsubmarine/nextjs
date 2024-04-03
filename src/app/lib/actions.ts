@@ -34,6 +34,26 @@ export const addUser = async (formData: FormData) => {
   redirect('/home/users')
 }
 
+export const updateUser = async (formData: FormData) => {
+  const { id, ...updateData } = Object.fromEntries(formData)
+
+  try {
+    await connectToDB()
+
+    const sanitizedData = Object.fromEntries(
+      Object.entries(updateData).filter(([_, value]) => value !== '' && value !== undefined)
+    )
+
+    await User.findByIdAndUpdate(id, sanitizedData)
+  } catch (err) {
+    console.log(err)
+    throw new Error('Failed to update user!')
+  }
+
+  revalidatePath('/home/users')
+  redirect('/home/users')
+}
+
 export const addProduct = async (formData: FormData) => {
   const { title, description, price, stock, color, size } = Object.fromEntries(formData)
 
@@ -56,4 +76,54 @@ export const addProduct = async (formData: FormData) => {
 
   revalidatePath('/home/products')
   redirect('/home/products')
+}
+
+export const updateProduct = async (formData: FormData) => {
+  const { id, ...updateData } = Object.fromEntries(formData)
+
+  try {
+    await connectToDB()
+
+    const sanitizedData = Object.fromEntries(
+      Object.entries(updateData).filter(([_, value]) => value !== '' && value !== undefined)
+    )
+
+    await Product.findByIdAndUpdate(id, sanitizedData)
+  } catch (err) {
+    console.log(err)
+    throw new Error('Failed to update product!')
+  }
+
+  revalidatePath('/home/products')
+  redirect('/home/products')
+}
+
+export const deleteUser = async (formData: FormData) => {
+  const { id } = Object.fromEntries(formData)
+
+  try {
+    await connectToDB()
+
+    await User.findByIdAndDelete(id)
+  } catch (err) {
+    console.log(err)
+    throw new Error('Failed to delete user!')
+  }
+
+  revalidatePath('/home/users')
+}
+
+export const deleteProduct = async (formData: FormData) => {
+  const { id } = Object.fromEntries(formData)
+
+  try {
+    await connectToDB()
+
+    await Product.findByIdAndDelete(id)
+  } catch (err) {
+    console.log(err)
+    throw new Error('Failed to delete product!')
+  }
+
+  revalidatePath('/home/products')
 }

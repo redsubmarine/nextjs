@@ -1,37 +1,44 @@
+import { updateProduct } from '@/app/lib/actions'
+import { fetchProduct } from '@/app/lib/data'
 import styles from '@/app/ui/home/products/singleProduct/singleProduct.module.css'
+import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 import Image from 'next/image'
 import { FunctionComponent } from 'react'
 
-interface SingleProductPageProps {}
+interface SingleProductPageProps {
+  params: Params
+}
 
-const SingleProductPage: FunctionComponent<SingleProductPageProps> = () => {
+const SingleProductPage: FunctionComponent<SingleProductPageProps> = async ({ params }) => {
+  const { id } = params
+  const product = await fetchProduct(id)
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
           <Image src="/noavatar.png" alt="avatar" fill />
         </div>
-        iPhone
+        {product.title}
       </div>
       <div className={styles.formContainer}>
-        <form action="" className={styles.form}>
+        <form action={updateProduct} className={styles.form}>
           <label>Title</label>
-          <input type="text" name="title" placeholder="Red" />
+          <input type="text" name="title" placeholder={product.title} />
           <label>Price</label>
-          <input type="number" name="price" placeholder="hello@hello.com" />
+          <input type="number" name="price" placeholder={product.price} />
           <label>Stock</label>
-          <input type="number" name="stock" placeholder="23" />
+          <input type="number" name="stock" placeholder={product.stock} />
           <label>Color</label>
-          <input type="text" name="color" placeholder="blue" />
+          <input type="text" name="color" placeholder={product.color} />
           <label>Size</label>
-          <textarea name="size" placeholder="Seoul" />
+          <textarea name="size" placeholder={product.size} />
           <label>Cat</label>
           <select name="cat" id="cat">
             <option value="kitchen">Kitchen</option>
             <option value="computers">Computers</option>
           </select>
           <label>Description</label>
-          <textarea name="description" id="desc" rows={10} placeholder="Description" />
+          <textarea name="description" id="desc" rows={10} placeholder={product.description} />
           <button>Update</button>
         </form>
       </div>
