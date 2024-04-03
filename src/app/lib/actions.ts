@@ -1,8 +1,10 @@
 'use server'
 
 import bcrypt from 'bcrypt'
+import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { signIn } from '../auth'
 import { Product, User } from './models'
 import { connectToDB } from './utils'
 
@@ -126,4 +128,22 @@ export const deleteProduct = async (formData: FormData) => {
   }
 
   revalidatePath('/home/products')
+}
+
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+  const { username, password } = Object.fromEntries(formData)
+
+  try {
+    await signIn('credentials', { username, password })
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.'
+        default:
+          return 'Something went wrong.'
+      }
+    }
+    throw error
+  }
 }

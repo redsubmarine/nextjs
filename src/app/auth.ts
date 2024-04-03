@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { authConfig } from './auth.config'
-import { connectToDB } from './lib/utils'
-import { User } from './lib/models'
 import bcrypt from 'bcrypt'
+import NextAuth from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
+import { authConfig } from './auth.config'
+import { User } from './lib/models'
+import { connectToDB } from './lib/utils'
 
 const login = async (credentials: Partial<Record<string, unknown>>) => {
   try {
@@ -24,19 +24,28 @@ const login = async (credentials: Partial<Record<string, unknown>>) => {
 }
 
 export const { signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
-    CredentialsProvider({
-      ...authConfig,
+    Credentials({
       async authorize(credentials) {
         try {
-          console.log(10, '1111111111111111111111111')
+          console.log('credentials------------')
           const user = await login(credentials)
-          console.log(11)
           return user
         } catch (err) {
+          console.log(err)
           return null
         }
       },
     }),
   ],
+  callbacks: {
+    async jwt(token, user) {
+      if (user) {
+        token.username = user.username
+        token.image = user.image
+      }
+      return token
+    },
+  },
 })

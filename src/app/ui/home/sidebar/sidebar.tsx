@@ -1,3 +1,4 @@
+import { auth } from '@/app/auth'
 import Image from 'next/image'
 import { FunctionComponent } from 'react'
 import {
@@ -81,7 +82,9 @@ const menuItems: IMenuItems[] = [
 
 interface SidebarProps {}
 
-const Sidebar: FunctionComponent<SidebarProps> = () => {
+const Sidebar: FunctionComponent<SidebarProps> = async () => {
+  const session = await auth()
+  console.log(session)
   return (
     <div className={styles.container}>
       <div className={styles.user}>

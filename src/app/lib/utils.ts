@@ -3,6 +3,7 @@ import mongoose, { ConnectionStates } from 'mongoose'
 const connection = { isConnected: false }
 
 export const connectToDB = async () => {
+  console.log('connection.isConnected', connection.isConnected)
   try {
     if (connection.isConnected) return
 
